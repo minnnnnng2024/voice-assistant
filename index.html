@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enhanced Voice Assistant Demo</title>
+    <title>Voice Assistant</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -43,12 +43,6 @@
         #speakBtn:hover, #submitBtn:hover {
             background-color: #45a049;
         }
-        #output {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #e9e9e9;
-            border-radius: 5px;
-        }
         #textInput {
             width: 80%;
             padding: 10px;
@@ -64,12 +58,11 @@
 </head>
 <body>
     <div class="container">
-        <h1>Enhanced Voice Assistant Demo</h1>
+        <h1>Voice-Only Response Assistant</h1>
         <button id="speakBtn">Talk to Assistant</button>
         <div id="error"></div>
         <input type="text" id="textInput" placeholder="Or type your message here">
         <button id="submitBtn">Submit</button>
-        <div id="output"></div>
     </div>
 
     <script>
@@ -80,7 +73,7 @@
         }
 
         const responses = {
-            "recommend": "Here is one option. VitaGarden Organic Cold-Pressed Juice is cold-pressed to preserve the maximum amount of nutrients, enzymes, and vitamins. It's also organic and non-GMO. The product is packaged in a 12-pack, with each bottle containing 10 fluid ounces. You get three bottles of each flavor: apple, citrus, cranberry, and carrot-kale. Its price is $15.50.",
+            "recommend": "Here's an option: VitaGarden Organic Cold-Pressed Juice. It's packed with nutrients and is non-GMO. You get a 12-pack with 10-ounce bottles in four flavors: apple, citrus, cranberry, and carrot-kale. The price is $15.50.",
             "hello": "Hello! How can I assist you today?",
             "bye": "Goodbye! Have a great day!",
         };
@@ -91,7 +84,6 @@
                 if (input.includes(keyword)) {
                     console.log("Matched response for keyword:", keyword);
                     speak(response);
-                    document.getElementById('output').innerText = response;
                     responded = true;
                     break;
                 }
@@ -99,13 +91,10 @@
 
             if (!responded) {
                 console.log("No match found for input:", input);
-                const defaultResponse = "I'm not sure about that. Can you please rephrase or ask me for a recommendation?";
-                speak(defaultResponse);
-                document.getElementById('output').innerText = defaultResponse;
+                speak("I'm not sure about that. Can you please rephrase or ask me for a recommendation?");
             }
         }
 
-        // Check for SpeechRecognition support
         if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             const recognition = new SpeechRecognition();
@@ -114,8 +103,7 @@
 
             recognition.onresult = function(event) {
                 const userInput = event.results[0][0].transcript.toLowerCase();
-                console.log("User input:", userInput);
-                document.getElementById("output").innerText = `You said: ${userInput}`;
+                console.log("User input (voice):", userInput);
                 processInput(userInput);
             };
 
@@ -134,12 +122,10 @@
             document.getElementById('error').innerText = 'Speech recognition is not supported in this browser. Please use the text input.';
         }
 
-        // Text input handling
         document.getElementById("submitBtn").addEventListener("click", function() {
             const userInput = document.getElementById("textInput").value.toLowerCase();
             if (userInput) {
                 console.log("User input (text):", userInput);
-                document.getElementById("output").innerText = `You said: ${userInput}`;
                 processInput(userInput);
                 document.getElementById("textInput").value = '';
             }
